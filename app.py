@@ -69,7 +69,16 @@ def transcribe_yt():
         
         # Print transcribed text
         st.header('Output')
-        st.success(transcript_output_response.json()["text"])
+        timestamped_text = []
+        for utterance in transcript_input_response['utterances']:
+            start_time = utterance['start_time']
+            end_time = utterance['end_time']
+            text = utterance['text']
+            timestamped_text.append(f'[{start_time:.2f}-{end_time:.2f}] {text}')
+
+        # Display the timestamped text
+        st.header('Timestamped Text')
+        st.markdown('\n'.join(timestamped_text))
 
         # Save transcribed text to file
         with open('yt.txt', 'w') as yt_txt:
